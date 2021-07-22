@@ -182,6 +182,41 @@ Consider converting to `vector` if you have a build/access pattern.)
     )
 
 ---
+# Map example
+
+In some structural simulation each parallel processs might own a part of the domain.
+
+.center[
+![:scale_img 60%](domain_decomp.png)
+]
+
+---
+# Map example
+
+So after starting all the processes and reading the domain we might
+have code like this:
+
+```C++
+auto rank2comms = std::map<int, BoundaryComm>{};
+for (auto p = 0; p < MPI_COMM_SIZE; ++p) {
+	if (ShareBoundaryWithRank(p)) {
+      rank2comms[p] = BoundaryComm(my_rank, p);
+  }
+}
+// later
+for (auto [rank, bc]: rank2comm) {
+  bc->SendData(local_data);
+}
+```
+???
+
+Map takes two type parameters in the angle brackets: the key type and
+value type
+
+What's with the square brackets? It's a structured binding similar to
+python's tuple unpacking
+
+---
 # Guidelines
 
 > Each container has its traits  
@@ -417,41 +452,6 @@ one
 done
 
 ![:fn_show]( )
-
----
-# Map example
-
-In some structural simulation each parallel processs might own a part of the domain.
-
-.center[
-![:scale_img 60%](domain_decomp.png)
-]
-
----
-# Map example
-
-So after starting all the processes and reading the domain we might
-have code like this:
-
-```C++
-auto rank2comms = std::map<int, BoundaryComm>{};
-for (auto p = 0; p < MPI_COMM_SIZE; ++p) {
-	if (ShareBoundaryWithRank(p)) {
-      rank2comms[p] = BoundaryComm(my_rank, p);
-  }
-}
-// later
-for (auto [rank, bc]: rank2comm) {
-  bc->SendData(local_data);
-}
-```
-???
-
-Map takes two type parameters in the angle brackets: the key type and
-value type
-
-What's with the square brackets? It's a structured binding similar to
-python's tuple unpacking
 
 ---
 template: titleslide

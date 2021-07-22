@@ -84,19 +84,19 @@ wrinkles that we'll talk about soon
 You can define a template class - i.e. a template that will produce a
 class when you instantiate it.
 
-Let's adapt our `dyn_array` container that to hold any type `T`
+Let's adapt the `my_array` container to hold any type `T`
 
 ```C++
 template<class T>
-class dyn_array {
+class my_array {
   unsigned size = 0;
   T* data = nullptr;
 
 public:
-  dyn_array();
-  dyn_array(unsigned n);
+  my_array();
+  my_array(unsigned n);
   // Copy / move?
-  ~dyn_array();
+  ~my_array();
   unsigned size() const;
   const T& operator[](unsigned i) const;
   T& operator[](unsigned i);
@@ -134,7 +134,7 @@ from other code.
 
 ```C++
 template<class T>
-class dyn_array {
+class my_array {
   unsigned size = 0;
   T* data = nullptr;
 
@@ -161,9 +161,9 @@ You can define the functions in place like:
 
 ```C++
 template<class T>
-class dyn_array {
+class my_array {
 public:
-  dyn_array() : _size(0), _data(nullptr) {}
+  my_array() : _size(0), _data(nullptr) {}
 };
 ```
 
@@ -172,7 +172,7 @@ include at the end of your header)
 
 ```C++
 template<class T>
-dyn_array<T>::dyn_array(unsigned n) : _size(n) {
+my_array<T>::my_array(unsigned n) : _size(n) {
   _data = new T[n];
 }
 ```
